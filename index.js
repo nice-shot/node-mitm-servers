@@ -1,3 +1,4 @@
+var util = require('util');
 var mitm = require('mitm')();
 
 var hostHandlers = {};
@@ -25,11 +26,11 @@ function addPort(hostname) {
 mitm.on('request', function (req, res) {
   var hostname = addPort(req.headers.host);
 
-  if (! (hostname in serviceHandlers)) {
+  if (! (hostname in hostHandlers)) {
     throw new Error('Handling request to non handled host: ' + hostname);
   }
 
-  serviceHandlers[hostname](req, res);
+  hostHandlers[hostname](req, res);
 });
 
 /**
