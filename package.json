@@ -1,0 +1,38 @@
+{
+  "name": "mitm-servers",
+  "version": "0.1.0",
+  "description": "Higher level intercepting and mocking library for Node.js HTTP requests in testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nice-shot/node-mitm-servers"
+  },
+  "keywords": [
+    "http",
+    "mocking",
+    "interception",
+    "express",
+    "test",
+    "testing"
+  ],
+  "author": {
+    "name": "Nadav Sheffer",
+    "url": "https://github.com/nice-shot"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nice-shot/node-mitm-servers/issues"
+  },
+  "homepage": "https://github.com/nice-shot/node-mitm-servers",
+  "devDependencies": {
+    "express": "^4.12.3",
+    "supertest": "^0.15.0",
+    "tape": "^4.0.0"
+  },
+  "dependencies": {
+    "mitm": "^1.1.0"
+  }
+}
