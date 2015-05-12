@@ -67,5 +67,29 @@ test('Mock localhost', function (t) {
 });
 
 test('Validations', function (t) {
-  t.end();
+  t.plan(3);
+
+  t.throws(
+    function () {
+      mitmServers.addApp();
+    },
+    /hostname is required/,
+    'No hostname'
+  );
+
+  t.throws(
+    function () {
+      mitmServers.addApp('domain.com');
+    },
+    /app must exist and be a function/,
+    'No express app'
+  );
+
+  t.throws(
+    function () {
+      mitmServers.addApp('domain.com', 'banana');
+    },
+    /app must exist and be a function/,
+    'Bad express app'
+  );
 });
