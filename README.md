@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/nice-shot/node-mitm-servers.svg?branch=master)](https://travis-ci.org/nice-shot/node-mitm-servers)
+[![Coverage Status](https://coveralls.io/repos/nice-shot/node-mitm-servers/badge.svg?branch=master)](https://coveralls.io/r/nice-shot/node-mitm-servers?branch=master)
+
 # mitm-servers
 This package allows high level HTTP server mocking using [mitm](https://github.com/moll/node-mitm)
 and [express](http://expressjs.com/). It allows making complex mock servers and APIs without actually
