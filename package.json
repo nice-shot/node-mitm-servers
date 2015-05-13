@@ -4,7 +4,8 @@
   "description": "Higher level intercepting and mocking library for Node.js HTTP requests in testing",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js"
+    "test": "node test/test.js",
+    "coveralls": "./node_modules/.bin/istanbul cover test/test.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
   "homepage": "https://github.com/nice-shot/node-mitm-servers",
   "devDependencies": {
     "async": "^0.9.0",
+    "coveralls": "^2.11.2",
     "express": "^4.12.3",
     "supertest": "^0.15.0",
     "tape": "^4.0.0"
