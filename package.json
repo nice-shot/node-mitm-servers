@@ -1,11 +1,11 @@
 {
   "name": "mitm-servers",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Higher level intercepting and mocking library for Node.js HTTP requests in testing",
   "main": "index.js",
   "scripts": {
     "test": "node test/test.js",
-    "coveralls": "./node_modules/.bin/istanbul cover test/test.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls && rm -rf ./coverage"
+    "coveralls": "istanbul cover test/test.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
