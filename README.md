@@ -44,3 +44,6 @@ Starts intercepting requests to the given host and handling those requests with 
 ### removeApp(hostname)
 Removes interceptions from the given host.
 * `hostname`: The target hostname as a string
+
+### removeAllApps()
+Removes interceptions for all the hosts. Convenient for teardown functions.

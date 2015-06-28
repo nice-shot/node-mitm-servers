@@ -13,6 +13,7 @@ mitm.on('connect', function handleConnections (socket, opts) {
 
 /**
  * Makes sure all hostnames have a specific port. Used for indexing
+ * NOTE! Doesn't support IPv6
  * @param hostname
  */
 function addPort(hostname) {
@@ -50,7 +51,6 @@ exports.addApp = function (hostname, app) {
   hostHandlers[addPort(hostname)] = app;
 };
 
-
 /**
  * Removes handling for the given host. Requests to this host will not be
  * interrupted anymore
@@ -58,4 +58,9 @@ exports.addApp = function (hostname, app) {
  */
 exports.removeApp = function (hostname) {
   delete(hostHandlers[hostname]);
+};
+
+/** Removes all handlers for all hosts */
+exports.removeAllApps = function () {
+  hostHandlers = {};
 };

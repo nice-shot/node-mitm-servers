@@ -1,7 +1,9 @@
 var test = require('tape');
 var http = require('http');
 var express = require('express');
+var Promise = require('bluebird');
 var request = require('supertest');
+Promise.promisifyAll(request);
 
 var mitmServers = require('..');
 
@@ -43,27 +45,53 @@ test('Mock localhost', function (t) {
   liveApp.get('/', function (req, res) {
     res.send('again!');
   });
-  liveServer = http.createServer(liveApp);
+  var liveServer = http.createServer(liveApp);
+  Promise.promisifyAll(liveServer);
 
-  liveServer.listen(1234, function () {
+  function addMock() {
     mitmServers.addApp('localhost:1234', mockedApp);
-    request('localhost:1234')
+  }
+
+  function requestServer () {
+    return request('localhost:1234')
       .get('/')
-      .expect('hello!')
-      .end(function (err) {
-        t.error(err, 'Mock take precedence to live servers');
-        mitmServers.removeApp('localhost:1234');
-        request('localhost:1234')
-          .get('/')
-          .expect('again!')
-          .end(function (err) {
-            t.error(err, 'Mocks are removed properly');
-            liveServer.close(t.end);
-          })
-        ;
-      })
+      .endAsync()
     ;
-  });
+  }
+
+  liveServer.listenAsync(1234)
+    .then(addMock)
+    .then(requestServer)
+    .then(function (res) {
+      t.equal(res.text, 'hello!', 'Mocked server takes precedence');
+      mitmServers.removeApp('localhost:1234');
+    })
+    .then(requestServer)
+    .then(function (res) {
+      t.equal(res.text, 'again!', 'Mocks are removed properly with removeApp');
+    })
+    .then(addMock)
+    .then(requestServer)
+    .then(function (res) {
+      t.equal(res.text, 'hello!', 'Mock can be used again');
+    })
+    .then(function () {
+      mitmServers.removeAllApps();
+    })
+    .then(requestServer)
+    .then(function(res) {
+      t.equal(
+        res.text,
+        'again!',
+        'Mocks are removed properly with removeAllApps'
+      );
+    })
+    .finally(function () {
+      liveServer.closeAsync()
+        .finally(t.end)
+      ;
+    })
+  ;
 });
 
 test('Validations', function (t) {
