@@ -1,6 +1,6 @@
 {
   "name": "mitm-servers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Higher level intercepting and mocking library for Node.js HTTP requests in testing",
   "main": "index.js",
   "scripts": {
@@ -93,7 +93,10 @@
       "no-warning-comments": [
         1
       ],
-      "indent": [2, 2]
+      "indent": [
+        2,
+        2
+      ]
     }
   }
 }
