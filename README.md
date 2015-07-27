@@ -53,6 +53,13 @@ Removes interceptions from the given host.
 ### removeAllApps()
 Removes interceptions for all the hosts. Convenient for teardown functions.
 
+## HTTPS
+If you need to mock a host that connections to it are sent with HTTPS you'll
+need to specifiy the SSL port for it (443). For example:
+```js
+mitmServers.addApp('google.com:443', mockApp);
+```
+
 [mitm]: https://github.com/moll/node-mitm
 [express]: http://expressjs.com/
 [nock]: https://github.com/pgte/nock

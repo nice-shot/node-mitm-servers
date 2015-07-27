@@ -6,7 +6,7 @@ var hostHandlers = {};
 /** Avoids intercepting non handled hosts */
 mitm.on('connect', function handleConnections (socket, opts) {
   var hostname = util.format('%s:%d', opts.host, opts.port);
-  if (! (hostname in hostHandlers)) {
+  if (!(hostname in hostHandlers)) {
     socket.bypass();
   }
 });
@@ -16,7 +16,7 @@ mitm.on('connect', function handleConnections (socket, opts) {
  * NOTE! Doesn't support IPv6
  * @param hostname
  */
-function addPort(hostname) {
+function addPort (hostname) {
   if (hostname.split(':').length !== 2) {
     hostname += ':80';
   }
@@ -27,7 +27,7 @@ function addPort(hostname) {
 mitm.on('request', function (req, res) {
   var hostname = addPort(req.headers.host);
 
-  if (! (hostname in hostHandlers)) {
+  if (!(hostname in hostHandlers)) {
     throw new Error('Handling request to non handled host: ' + hostname);
   }
 
@@ -44,8 +44,8 @@ exports.addApp = function (hostname, app) {
     throw new TypeError('hostname is required');
   }
 
-  if (!app || typeof(app) !== 'function') {
-    throw new TypeError('app must exist and be a function');
+  if (!app || typeof app !== 'function') {
+    throw new TypeError('app is required to be a function');
   }
 
   hostHandlers[addPort(hostname)] = app;
@@ -57,7 +57,7 @@ exports.addApp = function (hostname, app) {
  * @param hostname
  */
 exports.removeApp = function (hostname) {
-  delete(hostHandlers[hostname]);
+  delete hostHandlers[hostname];
 };
 
 /** Removes all handlers for all hosts */

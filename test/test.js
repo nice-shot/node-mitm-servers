@@ -8,12 +8,13 @@ Promise.promisifyAll(request);
 var mitmServers = require('..');
 
 test('Mock Google', function (t) {
-  t.plan(2);
+  t.plan(3);
 
   var staticApp = express();
   staticApp.use(express.static('test/static_sample'));
 
   mitmServers.addApp('google.com', staticApp);
+  mitmServers.addApp('google.com:443', staticApp);
 
   request('google.com')
     .get('/')
@@ -29,6 +30,15 @@ test('Mock Google', function (t) {
     .expect(404)
     .end(function (err) {
       t.error(err, 'Missing static page returns 404');
+    })
+  ;
+
+  request('https://google.com')
+    .get('/')
+    .expect(200)
+    .expect('<html><body>Fake Google!</body></html>\n')
+    .end(function (err) {
+      t.error(err, 'HTTPS request');
     })
   ;
 
@@ -48,7 +58,7 @@ test('Mock localhost', function (t) {
   var liveServer = http.createServer(liveApp);
   Promise.promisifyAll(liveServer);
 
-  function addMock() {
+  function addMock () {
     mitmServers.addApp('localhost:1234', mockedApp);
   }
 
@@ -79,7 +89,7 @@ test('Mock localhost', function (t) {
       mitmServers.removeAllApps();
     })
     .then(requestServer)
-    .then(function(res) {
+    .then(function (res) {
       t.equal(
         res.text,
         'again!',
@@ -109,7 +119,7 @@ test('Validations', function (t) {
     function () {
       mitmServers.addApp('domain.com');
     },
-    /app must exist and be a function/,
+    /app is required to be a function/,
     'No express app'
   );
 
@@ -117,7 +127,7 @@ test('Validations', function (t) {
     function () {
       mitmServers.addApp('domain.com', 'banana');
     },
-    /app must exist and be a function/,
+    /app is required to be a function/,
     'Bad express app'
   );
 });
